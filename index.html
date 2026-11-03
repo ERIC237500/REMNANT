@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>REMNANT</title>
+<style>
+:root{--bg:#eef6ff;--card:#fff;--tx:#1f2a44;--mu:#6b7a99;--ac:#3b82f6;--bd:#d6e6fb;--ch:#f97316;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#16213a;--card:#1f2d4d;--tx:#eef3ff;--mu:#9fb0d3;--ac:#60a5fa;--bd:#2d4170;--ch:#fdba74;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#16213a;--card:#1f2d4d;--tx:#eef3ff;--mu:#9fb0d3;--ac:#60a5fa;--bd:#2d4170;--ch:#fdba74;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.6 -apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+.w{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 14px;color:var(--ac)}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+button,select,input,textarea{font:inherit;color:var(--tx)}
+.tab,.b{border:1px solid var(--bd);background:var(--card);padding:8px 14px;border-radius:10px;cursor:pointer}
+.tab.on,.b.p{background:var(--ac);color:#fff;border-color:var(--ac)}
+.b.s{padding:4px 10px;font-size:13px}
+.card{box-shadow:0 2px 8px rgba(59,130,246,.08);background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.card .t{flex:1;min-width:0;cursor:pointer}.card b{display:block}.mu{color:var(--mu);font-size:13px}
+input,textarea,select{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
+textarea{min-height:240px;font-family:ui-monospace,Menlo,monospace;font-size:14px}
+.row{display:flex;gap:8px;margin:8px 0;align-items:center;flex-wrap:wrap}
+.sheet{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin:10px 0;overflow-x:auto}
+.ln{display:flex;flex-wrap:wrap;align-items:flex-end;min-height:2.6em}
+.sg{display:inline-flex;flex-direction:column;white-space:pre}
+.c{color:var(--ch);font-weight:700;font-size:13px;min-height:1.3em;padding-right:6px}
+.cl{color:var(--ch);font-weight:700;font-family:ui-monospace,Menlo,monospace;white-space:pre}
+.sec{color:var(--mu);font-size:12px;margin-top:10px}
+.back{background:none;border:0;color:var(--ac);cursor:pointer;padding:0 0 8px;font-size:14px}
+.hide{display:none}
+.card{flex-wrap:wrap}
+body.s-songs{--ac:#6d5ce8;--bg:#f4f0ff;--bd:#e0d8fa}
+body.s-word{--ac:#3b82f6;--bg:#eef5ff;--bd:#d6e6fb}
+body.s-pray{--ac:#14a37f;--bg:#ecf9f4;--bd:#cfeee2}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body.s-songs{--ac:#a592ff;--bg:#1e1a3a;--card:#2a2548;--bd:#3d3668}:root:not([data-theme="light"]) body.s-word{--ac:#60a5fa;--bg:#16213a;--card:#1f2d4d;--bd:#2d4170}:root:not([data-theme="light"]) body.s-pray{--ac:#3dd6a8;--bg:#143028;--card:#1d3d34;--bd:#2a5446}}
+body.home{background:linear-gradient(135deg,#e6f3ff,#fffaf4 50%,#ffeee3);min-height:100vh}body.home .w{max-width:980px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body.home{background:linear-gradient(135deg,#1b2d4a,#1a2236 50%,#3a2a2c)}}
+:root[data-theme="dark"] body.home{background:linear-gradient(135deg,#1b2d4a,#1a2236 50%,#3a2a2c)}
+.dc{position:fixed;border:1px solid var(--bd);border-radius:50%;pointer-events:none;opacity:.7}
+.hero{position:relative;text-align:center;padding:40px 0 30px}.logo{width:84px;height:84px;margin:0 auto 18px;border-radius:24px;background:var(--card);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 6px 20px rgba(99,102,241,.15)}
+.ttl{font-size:clamp(34px,8vw,54px);font-weight:800;letter-spacing:2px;line-height:1.2;background:linear-gradient(90deg,#3b7bea,#ee7d4a);-webkit-background-clip:text;background-clip:text;color:transparent;margin:0}
+.bar{width:52px;height:3px;border-radius:3px;margin:14px auto;background:linear-gradient(90deg,#3b82f6,#f97316)}.sub{color:var(--mu);font-size:14px;font-weight:600}
+.hg{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:8px}
+.hc{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--bd);border-radius:24px;padding:28px 24px 24px;min-height:210px;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,.08);transition:transform .2s,box-shadow .2s}
+.hc:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(99,102,241,.16)}
+.hc::before{content:"";position:absolute;top:-50px;right:-50px;width:150px;height:150px;border-radius:50%;background:var(--t)}
+.hc::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--a);opacity:0;transition:opacity .2s}.hc:hover::after{opacity:.7}
+.ic{position:relative;width:60px;height:60px;border-radius:18px;background:var(--t);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:22px}
+.hc h3{position:relative;margin:0 0 6px;font-size:16px;font-weight:800;letter-spacing:0;white-space:nowrap}.hc p{position:relative;margin:0;color:var(--mu);font-size:13px;padding-right:44px}
+.go{position:absolute;right:18px;bottom:18px;width:38px;height:38px;border-radius:50%;background:var(--t);color:var(--a);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+</style></head><body><div class="w">
+<button class="back" id="hm" style="display:none">← 처음으로</button>
+<h1 id="h1"></h1>
+<div class="tabs" id="tb"><button class="tab on" data-t="songs">찬양 목록</button><button class="tab" data-t="sets">콘티</button></div>
+<div id="v"></div>
+<div style="text-align:center;margin:28px 0 8px"><button onclick="adminLogin()" style="background:none;border:0;color:#999;font-size:12px;cursor:pointer">🔒 관리자</button></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== 여기를 본인 값으로 바꾸세요 (README.md 참고) ===== */
+const FIREBASE_CONFIG={apiKey:"여기에",authDomain:"여기에",projectId:"여기에",appId:"여기에"};
+const ADMIN_EMAIL="관리자이메일@example.com";
+/* ======================================================== */
+firebase.initializeApp(FIREBASE_CONFIG);
+const auth=firebase.auth(),fdb=firebase.firestore();
+const ready=new Promise(res=>{let t=false;auth.onAuthStateChanged(u=>{if(u)res(u);else if(!t){t=true;auth.signInAnonymously().catch(()=>res(null))}})});
+const claude={async use(n){const u=await ready;
+ if(n==='db')return u?{collection:c=>({onSnapshot:(f,e)=>fdb.collection(c).onSnapshot(f,e),doc:id=>({set:d=>fdb.collection(c).doc(id).set(d),update:d=>fdb.collection(c).doc(id).update(d),delete:()=>fdb.collection(c).doc(id).delete()})})}:null;
+ if(n==='user'){const a=!!u&&u.email===ADMIN_EMAIL;return{id:async()=>u.uid,isOwner:()=>a,canEdit:()=>a}}
+ if(n==='downloads')return{save:async({filename,data})=>{const b=data instanceof Blob?data:new Blob([data],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}};
+ if(n==='assets')return{upload:async b=>{const bm=await createImageBitmap(b),r=Math.min(1,1100/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=bm.width*r;c.height=bm.height*r;c.getContext('2d').drawImage(bm,0,0,c.width,c.height);const id='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);await fdb.collection('photos').doc(id).set({data:c.toDataURL('image/jpeg',.7),ts:Date.now()});return{id}}};
+ return null}};
+function loadPhotos(root){root.querySelectorAll('img[data-ph]').forEach(async im=>{try{const d=await fdb.collection('photos').doc(im.dataset.ph).get();if(d.exists)im.src=d.data().data}catch(e){}})}
+function adminLogin(){const cu=auth.currentUser;if(cu&&cu.email===ADMIN_EMAIL){auth.signOut().then(()=>location.reload());return}const pw=prompt('관리자 비밀번호');if(!pw)return;auth.signInWithEmailAndPassword(ADMIN_EMAIL,pw).then(()=>location.reload()).catch(()=>alert('로그인에 실패했어요'))}
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SH=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'],FL={Db:'C#',Eb:'D#',Gb:'F#',Ab:'G#',Bb:'A#'};
+const KEYS=['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+const idx=k=>{k=FL[k]||k;return SH.indexOf(k)};
+const flatKeys=['F','Bb','Eb','Ab','Db','Dm','Gm','Cm','Fm'];
+function tr(ch,n,flat){return ch.replace(/[A-G][#b]?/g,m=>{const i=idx(m);if(i<0)return m;const j=(i+n+120)%12;const s=SH[j];return flat&&s.includes('#')?({'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb'})[s]:s})}
+const CT=/^[A-G][#b]?(m|maj|min|sus|add|dim|aug|M)?\d*(\/[A-G][#b]?)?$/;
+const isChordLine=l=>{const t=l.trim().split(/\s+/);return l.trim()&&t.every(x=>CT.test(x))};
+function semis(from,to){return ((idx(to)-idx(from))%12+12)%12}
+function render(body,n,flat){
+  return body.split('\n').map(l=>{
+    if(/^\s*[\(\[]?(Verse|Chorus|Bridge|Intro|Outro|Pre|절|후렴|브릿지|간주|전주|후주)/i.test(l)&&!/\[[A-G]/.test(l))return `<div class="sec">${esc(l)}</div>`;
+    if(isChordLine(l))return `<div class="cl">${esc(tr(l,n,flat))}</div>`;
+    if(!/\[[^\]]+\]/.test(l))return `<div class="ln"><span class="sg"><span class="c"> </span>${esc(l)||' '}</span></div>`;
+    const p=l.split(/\[([^\]]+)\]/);let h='';
+    if(p[0])h+=`<span class="sg"><span class="c"> </span>${esc(p[0])}</span>`;
+    for(let i=1;i<p.length;i+=2)h+=`<span class="sg"><span class="c">${esc(tr(p[i],n,flat))}</span>${esc(p[i+1]||'')||' '}</span>`;
+    return `<div class="ln">${h}</div>`}).join('')}
+function toText(body,n,flat){return body.split('\n').map(l=>isChordLine(l)?tr(l,n,flat):l.replace(/\[([^\]]+)\]/g,(m,c)=>'['+tr(c,n,flat)+']')).join('\n')}
+
+let db=null,dl=null,sm=null,ast=null,uid=null,adm=false,own=false,site='home',words=[],wv=null,prs=[],pv=null,pf='all',songs=[],sets=[],tab='songs',view=null,cur={id:null,name:'',items:[]},err='';
+const sorted=a=>a.slice().sort((x,y)=>(x.title||'').localeCompare(y.title||'','ko'));
+const song=id=>songs.find(s=>s.id===id);
+const can=s=>adm||(!!s.by&&s.by===uid);
+
+async function shrink(f,mx=1600){const b=await createImageBitmap(f),r=Math.min(1,mx/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=b.width*r;c.height=b.height*r;c.getContext('2d').drawImage(b,0,0,c.width,c.height);return new Promise(ok=>c.toBlob(ok,'image/jpeg',.85))}
+const PROMPT='첨부된 찬양 악보 사진(들)을 읽고 JSON 하나만 출력하세요. 설명이나 코드블록 없이 JSON만. 형식: {"title":"곡 제목","artist":"아티스트/작곡자(안 보이면 빈 문자열)","key":"원키 예: G, Bb, F#(안 보이면 코드를 보고 추정, 장조 기준)","body":"가사 전체"}. body 규칙: 가사 줄마다, 코드가 나오는 음절 바로 앞에 [G]처럼 대괄호로 코드를 끼워 넣기. 코드는 악보에 적힌 그대로(Am7, D/F# 등). 절/후렴/브릿지/전주/간주는 [Verse], [Chorus], [Bridge], [Intro], [Interlude] 처럼 단독 줄로 표시. 줄바꿈은 \\n. 반복기호나 페이지 번호는 제외. 읽을 수 없는 부분은 추측하지 말고 생략.';
+async function init(){
+  try{db=await claude.use('db');dl=await claude.use('downloads');sm=await claude.use('sample')}catch(e){}
+  try{ast=await claude.use('assets')}catch(e){}
+  try{const u=await claude.use('user');uid=await u.id();adm=!!(u.isOwner()||u.canEdit());own=!!u.isOwner()}catch(e){}
+  if(!db){err='저장소 연결에 실패했어요. index.html 위쪽의 FIREBASE_CONFIG 설정을 확인해주세요.';draw();return}
+  const t=setTimeout(()=>{},10000);
+  db.collection('songs').onSnapshot(s=>{clearTimeout(t);songs=s.docs.map(d=>({id:d.id,...d.data()}));draw()},e=>{err='불러오기 실패: '+e.message;draw()});
+  db.collection('prayers').onSnapshot(s=>{prs=s.docs.map(d=>({id:d.id,...d.data()}));draw()},()=>{});
+  db.collection('words').onSnapshot(s=>{words=s.docs.map(d=>({id:d.id,...d.data()}));draw()},()=>{});
+  db.collection('setlists').onSnapshot(s=>{sets=s.docs.map(d=>({id:d.id,...d.data()}));draw()},()=>{});
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.t;view=null;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));draw()});
+
+function draw(){
+  const v=$('#v');
+  $('#h1').textContent={home:'🙌 함께 나눔',songs:'🎵 WORSHIP of REMNANT',word:'📖 MESSAGE of REMNANT',pray:'🙏 PRAISE of REMNANT'}[site];
+  document.body.className=site==='home'?'home':'s-'+site;$('#h1').style.display=site==='home'?'none':'';$('#hm').style.display=site==='home'?'none':'';$('#tb').style.display=site==='songs'?'':'none';
+  if(site==='home')return home2(v);
+  if(err&&!db){v.innerHTML=`<p class="mu">${esc(err)}</p>`;return}
+  if(site!=='pray')pv=null;
+  if(site==='word')return wordPage(v);
+  if(site==='pray')return prayPage(v);
+  if(view&&view.kind==='bulk'){if(!v.querySelector('#bf'))bulkPage2(v);return}
+  if(view&&view.kind==='edit')return editor(v);
+  if(view&&view.kind==='song')return viewer(v);
+  tab==='songs'?list(v):setPage(v)}
+
+function list(v){
+  v.innerHTML=`<div class="row"><input id="q" placeholder="제목 검색" style="flex:1"><button class="b" id="bulk">📷 여러 장 한번에</button><button class="b p" id="add">+ 악보 올리기</button></div><div id="l"></div>`;
+  const paint=()=>{const q=$('#q').value.trim().toLowerCase();const a=sorted(songs).filter(s=>!q||(s.title+' '+(s.artist||'')).toLowerCase().includes(q));
+    $('#l').innerHTML=a.length?a.map(s=>`<div class="card"><div class="t" data-o="${s.id}"><b>${esc(s.title)}</b><span class="mu">Key ${esc(s.key||'-')}${s.artist?' · '+esc(s.artist):''}</span></div><button class="b s" data-p="${s.id}">👁 미리보기</button>${own?`<button class="b s" data-x2="${s.id}">🗑 삭제</button>`:''}<button class="b s" data-a="${s.id}">+ 콘티</button><div class="sheet hide" id="pv${s.id}" style="width:100%;margin:6px 0 0"></div></div>`).join(''):'<p class="mu">아직 악보가 없어요. 첫 악보를 올려보세요!</p>';
+    $('#l').querySelectorAll('[data-o]').forEach(e=>e.onclick=()=>{view={kind:'song',id:e.dataset.o,n:0};draw()});
+    $('#l').querySelectorAll('[data-a]').forEach(e=>e.onclick=()=>{const s=song(e.dataset.a);cur.items.push({id:s.id,key:s.key||'C'});e.textContent='✓ 담김';e.disabled=true});
+    $('#l').querySelectorAll('[data-p]').forEach(e=>e.onclick=()=>{const b=$('#pv'+e.dataset.p),s=song(e.dataset.p);if(b.classList.toggle('hide')===false){b.innerHTML=render((s.body||'').split('\n').slice(0,14).join('\n'),0,false)+'<div class="mu" style="margin-top:8px">… 전체 악보는 곡을 열어 확인하세요</div>';e.textContent='닫기'}else e.textContent='👁 미리보기'});
+    $('#l').querySelectorAll('[data-x2]').forEach(e=>e.onclick=async()=>{const s=song(e.dataset.x2);if(own&&s&&sure(e)){try{await db.collection('songs').doc(s.id).delete()}catch(x){e.textContent='삭제 실패'}}})};
+  $('#q').oninput=paint;paint();$('#bulk').onclick=()=>{view={kind:'bulk'};draw()};
+  $('#add').onclick=()=>{view={kind:'edit',s:{title:'',artist:'',key:'C',body:''}};draw()}}
+
+function viewer(v){
+  const s=song(view.id);if(!s){view=null;return draw()}
+  const base=s.key||'C',to=KEYS[(idx(base)+view.n+120)%12]||base,flat=flatKeys.includes(to);
+  v.innerHTML=`<button class="back" id="bk">← 목록</button><h2 style="margin:0">${esc(s.title)}</h2><div class="mu">${esc(s.artist||'')}</div>
+  <div class="row"><span>키</span><select id="k" style="width:auto">${KEYS.map(k=>`<option ${k===to?'selected':''}>${k}</option>`).join('')}</select><span class="mu">원키 ${esc(base)}</span><span style="flex:1"></span>${can(s)?'<button class="b s" id="ed">수정</button>':''}<button class="b s" id="dn">텍스트</button><button class="b s" id="im">이미지</button><button class="b s" id="pf">PDF</button></div>
+  ${(s.imgs||[]).length?`<div class="row"><button class="b s ${view.ph!==false?'p':''}" id="tp">📷 원본 사진</button><button class="b s ${view.ph===false?'p':''}" id="tc">🎼 코드 악보</button></div>`:''}<div class="sheet">${(s.imgs||[]).length&&view.ph!==false?s.imgs.map(i=>`<img data-ph="${i}" style="width:100%;border-radius:8px;display:block;margin-bottom:8px">`).join(''):render(s.body||'',semis(base,to),flat)}</div>`;
+  $('#bk').onclick=()=>{view=null;draw()};
+  $('#k').onchange=e=>{view.n=semis(base,e.target.value);draw()};
+  loadPhotos(v);$('#im').onclick=()=>imgOf([{s,key:to}],s.title);if($('#tp')){$('#tp').onclick=()=>{view.ph=true;draw()};$('#tc').onclick=()=>{view.ph=false;draw()}}$('#pf').onclick=()=>pdfOf([{s,key:to}],s.title);
+  if($('#ed'))$('#ed').onclick=()=>{view={kind:'edit',s};draw()};
+  $('#dn').onclick=()=>save(`${s.title}.txt`,`${s.title} (Key ${to})\n\n${toText(s.body||'',semis(base,to),flat)}`)}
+
+function bulkPage(v){
+  v.innerHTML=`<button class="back" id="bk">← 목록</button><h2 style="margin:0 0 6px">여러 악보 한번에 올리기</h2><p class="mu">악보 사진을 여러 장 선택하세요. 사진 한 장이 한 공으로 자동 등록돼요. (한 곡이 여러 장이면 '+ 악보 올리기'에서 올려주세요)</p><div class="row"><label class="b p" style="cursor:pointer">📷 사진 선택 (여러 장)<input id="bf" type="file" accept="image/*" multiple hidden></label></div><div id="bl"></div>`;
+  $('#bk').onclick=()=>{view=null;draw()};
+  $('#bf').onchange=async e=>{
+    const fs=[...e.target.files];if(!fs.length)return;
+    if(!sm){alert('이 화면에서는 자동 읽기를 쓸 수 없어요');return}
+    const box=$('#bl');box.innerHTML=fs.map((f,i)=>`<div class="card"><div class="t"><b>${esc(f.name)}</b><span class="mu" id="st${i}">대기 중</span></div></div>`).join('');
+    let ok=0,n=0;
+    const run=async()=>{while(n<fs.length){const k=n++,st=$('#st'+k);
+      try{st.textContent='읽는 중…';const bb=await shrink(fs[k]);const r=await sm(PROMPT,{images:[bb],cache:false});let im=[];if(ast){try{im=[(await ast.upload(bb)).id]}catch(e){}}
+        const j=JSON.parse(r.text.replace(/```json|```/g,'').trim());if(!j.title||!j.body)throw new Error('악보를 읽지 못했어요');
+        const ki=KEYS.find(x=>idx(x)===idx(String(j.key||'').replace(/m$/,'')))||'C',id='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+        await db.collection('songs').doc(id).set({title:j.title,artist:j.artist||'',key:ki,body:j.body,imgs:im,by:uid||'',ts:Date.now()});
+        st.textContent='✅ 등록됨: '+j.title;ok++;st.closest('.card').insertAdjacentHTML('beforeend','<div class="sheet" style="width:100%;margin:6px 0 0">'+render(String(j.body).split('\n').slice(0,10).join('\n'),0,false)+'</div>')}
+      catch(x){st.textContent='❌ 실패: '+(x.message||x.code||'다시 시도해주세요')}}};
+    await Promise.all([run(),run()]);
+    box.insertAdjacentHTML('beforeend',`<p>${ok}/${fs.length}곡 등록 완료! 목록에서 내용을 확인하고 필요하면 수정해주세요.</p>`);e.target.value=''}}
+
+function bulkPage2(v){
+  v.innerHTML=`<button class="back" id="bk">← 목록</button><h2 style="margin:0 0 6px">여러 악보 한번에 올리기</h2><p class="mu">악보 사진을 모두 선택하세요. 파일 이름이 같은 곡끼리(예: 곡명-1.jpg, 곡명-2.jpg) 한 곡으로 묶여 올라가고, 제목은 파일 이름이 돼요. 가사와 코드는 올린 뒤 곡의 수정 화면에서 입력하세요.</p><div class="row"><label class="b p" style="cursor:pointer">📷 사진 선택 (여러 장)<input id="bf" type="file" accept="image/*" multiple hidden></label></div><div id="bl"></div>`;
+  $('#bk').onclick=()=>{view=null;draw()};
+  $('#bf').onchange=async e=>{
+    const fs=[...e.target.files].sort((a,b)=>a.name.localeCompare(b.name,'ko',{numeric:true}));if(!fs.length)return;
+    const box=$('#bl');
+    if(!sm){const bn=f=>f.name.replace(/\.[^.]+$/,'').replace(/[\s_-]*\d+$/,'').trim()||f.name.replace(/\.[^.]+$/,''),gm=new Map();fs.forEach(f=>{const k=bn(f);gm.set(k,[...(gm.get(k)||[]),f])});box.innerHTML=[...gm].map(([t,L],i)=>`<div class="card"><div class="t"><b>${esc(t)}</b><span class="mu" id="st${i}">대기 중 (${L.length}장)</span></div></div>`).join('');let ok=0,i=0;for(const [t,L] of gm){const st=$('#st'+i++);try{st.textContent='올리는 중…';const ids=[];for(const f of L)ids.push((await ast.upload(await shrink(f))).id);await db.collection('songs').doc('s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)).set({title:t,artist:'',key:'C',body:'',imgs:ids,by:uid||'',ts:Date.now()});st.textContent='✅ 등록됨';ok++}catch(x){st.textContent='❌ 실패: '+(x.message||x)}}box.insertAdjacentHTML('beforeend',`<p>${ok}/${gm.size}곡 등록 완료! 곡을 열어 사진을 확인하고, 수정에서 제목·키·코드를 입력해주세요.</p>`);e.target.value='';return}
+    box.innerHTML='<p class="mu">사진을 분석해 같은 곡끼리 묶는 중…</p>';
+    let bs;try{bs=await Promise.all(fs.map(f=>shrink(f)))}catch(x){box.innerHTML='<p>사진을 불러오지 못했어요</p>';return}
+    let groups=fs.map((_,i)=>[i]);
+    if(fs.length>1){try{const sm2=await Promise.all(fs.map(f=>shrink(f,800)));
+      const r=await sm('첨부된 이미지는 찬양 악보 사진 '+fs.length+'장이며 순서대로 0부터 번호가 있습니다. 같은 곡의 여러 페이지(이어지는 장)는 하나로 묶고, 다른 곡은 따로 묶으세요. 제목, 가사의 이어짐, 페이지 번호를 근거로 판단하세요. 모든 번호를 정확히 한 번씩 포함해 JSON 배열만 출력하세요. 예: [[0,1],[2],[3,4]]. 설명 없이 JSON만.',{images:sm2,cache:false});
+      const g=JSON.parse(r.text.replace(/```json|```/g,'').trim()),fl=Array.isArray(g)?g.flat():[];
+      if(g.every(a=>Array.isArray(a)&&a.length)&&fl.length===fs.length&&new Set(fl).size===fs.length&&fl.every(i=>Number.isInteger(i)&&i>=0&&i<fs.length))groups=g.map(a=>a.slice().sort((x,y)=>x-y))}catch(x){}}
+    box.innerHTML=`<p class="mu">${fs.length}장 → ${groups.length}곡으로 묶었어요</p>`+groups.map((g,gi)=>`<div class="card"><div class="t"><b>${esc(g.map(i=>fs[i].name).join(' + '))}</b><span class="mu" id="st${gi}">대기 중</span></div></div>`).join('');
+    let ok=0,n=0;
+    const run=async()=>{while(n<groups.length){const k=n++,st=$('#st'+k),g=groups[k];
+      try{st.textContent='읽는 중…'+(g.length>1?` (${g.length}장)`:'');const im=g.map(i=>bs[i]);
+        const r=await sm((g.length>1?'같은 곡의 여러 페이지입니다. 순서대로 이어서 한 곡으로 합쳐주세요. ':'')+PROMPT,{images:im,cache:false});
+        const j=JSON.parse(r.text.replace(/```json|```/g,'').trim());if(!j.title||!j.body)throw new Error('악보를 읽지 못했어요');
+        let ids=[];if(ast){try{for(const b of im)ids.push((await ast.upload(b)).id)}catch(e){}}
+        const ki=KEYS.find(x=>idx(x)===idx(String(j.key||'').replace(/m$/,'')))||'C',id='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+        await db.collection('songs').doc(id).set({title:j.title,artist:j.artist||'',key:ki,body:j.body,imgs:ids,by:uid||'',ts:Date.now()});
+        st.textContent='✅ 등록됨: '+j.title+(g.length>1?` (${g.length}장)`:'');ok++;st.closest('.card').insertAdjacentHTML('beforeend','<div class="sheet" style="width:100%;margin:6px 0 0">'+render(String(j.body).split('\n').slice(0,10).join('\n'),0,false)+'</div>')}
+      catch(x){st.textContent='❌ 실패: '+(x.message||x.code||'다시 시도해주세요')}}};
+    await Promise.all([run(),run()]);
+    box.insertAdjacentHTML('beforeend',`<p>${ok}/${groups.length}곡 등록 완료! 목록에서 내용을 확인하고 필요하면 수정해주세요. 잘못 묶인 곡은 삭제 후 따로 올려주세요.</p>`);e.target.value=''}}
+
+function editor(v){
+  const s=view.s,imgs=[...(s.imgs||[])];
+  v.innerHTML=`<button class="back" id="bk">← 취소</button><h2 style="margin:0 0 8px">${s.id?'악보 수정':'악보 올리기'}</h2>
+  <div class="row"><label class="b p" style="cursor:pointer">📷 악보 사진 첨부<input id="ph" type="file" accept="image/*" multiple hidden></label><span class="mu" id="am">악보 사진을 첨부하면 곡을 열 때 원본 사진을 볼 수 있어요 (최대 3장)</span></div>
+  <div class="row"><input id="ti" placeholder="제목" value="${esc(s.title)}"></div>
+  <div class="row"><input id="ar" placeholder="아티스트(선택)" value="${esc(s.artist||'')}" style="flex:1"><select id="ky" style="width:90px">${KEYS.map(k=>`<option ${k===s.key?'selected':''}>${k}</option>`).join('')}</select></div>
+  <textarea id="bo" placeholder="가사 사이에 코드를 [G]처럼 넣어주세요&#10;&#10;[Verse]&#10;[G]주님의 [D]사랑은 [Em]끝이 없[C]네&#10;&#10;또는 코드만 있는 줄을 가사 위에 써도 돼요:&#10;G    D   Em&#10;주님의 사랑은">${esc(s.body||'')}</textarea>
+  <div class="row"><button class="b p" id="sv">저장하고 공유</button>${s.id&&own?'<button class="b" id="del">삭제</button>':''}<span class="mu" id="m"></span></div>
+  <p class="mu">미리보기</p><div class="sheet" id="pv"></div>`;
+  const pv=()=>{$('#pv').innerHTML=render($('#bo').value,0,false)};pv();$('#bo').oninput=pv;
+  $('#ph').onchange=async e=>{const fs=[...e.target.files].slice(0,3);if(!fs.length)return;const m=$('#am');
+    if(!sm){try{m.textContent='사진 저장 중…';for(const f of fs)imgs.push((await ast.upload(await shrink(f))).id);m.textContent='사진이 첨부됐어요. 가사와 코드는 직접 입력해주세요 ✏️'}catch(x){m.textContent='사진 저장 실패: '+(x.message||x)}e.target.value='';return}
+    m.textContent='악보를 읽는 중… (10~40초 걸려요)';
+    try{const bl=await Promise.all(fs.map(shrink));const r=await sm(PROMPT,{images:bl,cache:false});
+      const j=JSON.parse(r.text.replace(/```json|```/g,'').trim());
+      if(j.title)$('#ti').value=j.title;if(j.artist)$('#ar').value=j.artist;
+      const ki=KEYS.find(k=>idx(k)===idx(String(j.key||'').replace(/m$/,'')));if(ki)$('#ky').value=ki;
+      if(j.body){$('#bo').value=j.body;pv()}
+      if(ast){try{m.textContent='사진 저장 중…';for(const b of bl)imgs.push((await ast.upload(b)).id)}catch(x){}}
+      m.textContent='완료! 내용이 맞는지 확인하고 고쳐주세요 ✏️'}
+    catch(x){m.textContent=x.code==='not_granted'?'허용이 필요해요. 다시 시도해주세요':'읽기 실패: '+(x.message||x.code||'다시 시도해주세요')}
+    e.target.value=''};
+  $('#bk').onclick=()=>{view=s.id?{kind:'song',id:s.id,n:0}:null;draw()};
+  $('#sv').onclick=async()=>{if(s.id&&!can(s)){$('#m').textContent='수정 권한이 없어요';return}const title=$('#ti').value.trim();if(!title){$('#m').textContent='제목을 입력해주세요';return}
+    const d={title,artist:$('#ar').value.trim(),key:$('#ky').value,body:$('#bo').value,imgs,by:s.by||uid||'',ts:Date.now()};
+    try{const id=s.id||'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);await db.collection('songs').doc(id).set(d);view={kind:'song',id,n:0};draw()}catch(e){$('#m').textContent='저장 실패: '+(e.message||e.code)}};
+  if(s.id&&own)$('#del').onclick=async()=>{if(!own){$('#m').textContent='삭제 권한이 없어요';return}if(sure($('#del'))){try{await db.collection('songs').doc(s.id).delete();view=null;draw()}catch(e){$('#m').textContent='삭제 권한이 없어요'}}}}
+
+function setPage(v){
+  v.innerHTML=`<div class="row"><select id="ss" style="flex:1"><option value="">＋ 새 콘티</option>${sorted(sets).map(x=>`<option value="${x.id}" ${x.id===cur.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>
+  <div class="row"><input id="nm" placeholder="콘티 이름 (예: 주일예배)" value="${esc(cur.name)}" style="flex:1;min-width:140px"><input id="dt" type="date" value="${esc(cur.date||'')}" style="width:auto"></div>
+  <div id="it"></div><p class="mu" id="em" ${cur.items.length?'hidden':''}>‘찬양 목록’에서 [+ 콘티]를 눌러 곡을 담아주세요.</p>
+  <div class="row"><button class="b p" id="sv">콘티 저장</button><button class="b" id="dn">전체 다운로드</button><button class="b" id="pdf">PDF</button><button class="b" id="nw">비우기</button><span class="mu" id="m"></span></div>`;
+  const paint=()=>{$('#it').innerHTML=cur.items.map((it,i)=>{const s=song(it.id);return s?`<div class="card"><b style="width:22px">${i+1}</b><div style="flex:1;min-width:0"><div class="t" data-o="${i}"><b>${esc(s.title)}</b></div><input data-m="${i}" placeholder="메모 (예: 간주 2번, 후렴 반복)" value="${esc(it.memo||'')}" style="margin-top:4px;font-size:13px;padding:4px 8px"></div><select data-k="${i}" style="width:72px">${KEYS.map(k=>`<option ${k===it.key?'selected':''}>${k}</option>`).join('')}</select><button class="b s" data-u="${i}">↑</button><button class="b s" data-d="${i}">↓</button><button class="b s" data-x="${i}">✕</button></div>`:''}).join('');
+    const q=(a,f)=>$('#it').querySelectorAll(`[${a}]`).forEach(e=>{const i=+e.getAttribute(a);if(a==='data-k')e.onchange=()=>{cur.items[i].key=e.value};else e.onclick=()=>f(i)});
+    q('data-u',i=>{if(i>0){[cur.items[i-1],cur.items[i]]=[cur.items[i],cur.items[i-1]];paint()}});
+    q('data-d',i=>{if(i<cur.items.length-1){[cur.items[i+1],cur.items[i]]=[cur.items[i],cur.items[i+1]];paint()}});
+    q('data-x',i=>{cur.items.splice(i,1);paint()});q('data-k');$('#it').querySelectorAll('[data-m]').forEach(e=>e.oninput=()=>{cur.items[+e.dataset.m].memo=e.value});
+    q('data-o',i=>{view={kind:'song',id:cur.items[i].id,n:semis(song(cur.items[i].id).key||'C',cur.items[i].key)};draw()})};
+  paint();
+  $('#nm').oninput=e=>cur.name=e.target.value;$('#dt').oninput=e=>cur.date=e.target.value;
+  $('#pdf').onclick=()=>{const l=cur.items.map(it=>({s:song(it.id),key:it.key,memo:it.memo})).filter(x=>x.s);if(!l.length){$('#m').textContent='담긴 곡이 없어요';return}pdfOf(l,cur.name||'콘티',(cur.name||'')+' '+(cur.date||''))};
+  $('#ss').onchange=e=>{const x=sets.find(z=>z.id===e.target.value);cur=x?{id:x.id,name:x.name,date:x.date||'',items:(x.items||[]).map(i=>({...i}))}:{id:null,name:'',items:[]};draw()};
+  $('#nw').onclick=()=>{cur={id:null,name:'',items:[]};draw()};
+  $('#sv').onclick=async()=>{if(!cur.name.trim()){$('#m').textContent='이름을 입력해주세요';return}
+    try{const id=cur.id||'l'+Date.now().toString(36);await db.collection('setlists').doc(id).set({name:cur.name.trim(),date:cur.date||'',items:cur.items,ts:Date.now()});cur.id=id;$('#m').textContent='저장됨 ✓'}catch(e){$('#m').textContent='저장 실패: '+(e.message||e.code)}};
+  $('#dn').onclick=()=>{if(!cur.items.length){$('#m').textContent='담긴 곡이 없어요';return}
+    const out=cur.items.map((it,i)=>{const s=song(it.id);if(!s)return '';const to=it.key,flat=flatKeys.includes(to);return `${i+1}. ${s.title} (Key ${to})${it.memo?' / 메모: '+it.memo:''}\n\n${toText(s.body||'',semis(s.key||'C',to),flat)}`}).join('\n\n==============================\n\n');
+    save(`${cur.name||'콘티'}.txt`,`${cur.name||'콘티'}\n${cur.items.map((it,i)=>`${i+1}. ${song(it.id)?.title||''} (${it.key})`).join('\n')}\n\n==============================\n\n${out}`)}}
+
+function home(v){v.innerHTML=`<p class="mu" style="margin-top:0">들어갈 곳을 선택하세요</p><div class="hg"><div class="hc" data-g="songs"><span>🎵</span><b>WORSHIP of REMNANT</b><small>악보 올리기 · 코드 확인 · 콘티 만들고 한번에 다운로드</small></div><div class="hc" data-g="word"><span>📖</span><b>MESSAGE of REMNANT</b><small>이번 주 붙잡은 말씀과 묵상을 함께 나눠요</small></div><div class="hc" data-g="pray"><span>🙏</span><b>PRAISE of REMNANT</b><small>기도제목과 기도문을 나누고 함께 기도해요</small></div></div>`;v.querySelectorAll('[data-g]').forEach(e=>e.onclick=()=>nav(e.dataset.g))}
+
+function wordPage(v){
+  if(wv)return wordEdit(v);
+  v.innerHTML=`<div class="row"><button class="b p" id="nw2">+ 말씀 나누기</button></div>${todayCard()}<div id="wl"></div>`;
+  const a=words.slice().sort((x,y)=>(y.ts||0)-(x.ts||0));
+  $('#wl').innerHTML=a.length?a.map(w=>`<div class="card" style="display:block"><div class="mu">${esc(w.nick||'익명')} · ${new Date(w.ts||0).toLocaleDateString('ko')}</div><b style="color:var(--ac);margin-top:4px">${esc(w.ref||'')}</b><div style="margin:6px 0;padding-left:10px;border-left:3px solid var(--ch);white-space:pre-wrap">${esc(w.verse||'')}</div><div style="white-space:pre-wrap">${esc(w.note||'')}</div><div class="row"><button class="b s" data-am="${w.id}">🙏 아멘 ${(w.amen||[]).length}</button>${can(w)?`<button class="b s" data-e="${w.id}">수정</button>`:''}</div>${cmHtml(w)}</div>`).join(''):'<p class="mu">아직 나눠진 말씀이 없어요. 첫 말씀을 나눠보세요!</p>';
+  $('#nw2').onclick=()=>{wv={};draw()};cmBind(v,'words',words);
+  v.querySelectorAll('[data-e]').forEach(e=>e.onclick=()=>{wv=words.find(x=>x.id===e.dataset.e);draw()});
+  v.querySelectorAll('[data-am]').forEach(e=>e.onclick=async()=>{if(!uid)return;const w=words.find(x=>x.id===e.dataset.am),s=new Set(w.amen||[]);s.has(uid)?s.delete(uid):s.add(uid);try{await db.collection('words').doc(w.id).update({amen:[...s]})}catch(x){}})}
+
+function wordEdit(v){
+  const w=wv;let nk='';try{nk=localStorage.getItem('nick')||''}catch(e){}
+  v.innerHTML=`<button class="back" id="bk">← 취소</button><h2 style="margin:0 0 8px">${w.id?'말씀 수정':'말씀 나누기'}</h2>
+  <div class="row"><input id="rf" placeholder="성경 구절 (예: 요한복음 3:16)" value="${esc(w.ref||'')}"></div>
+  <div class="row"><textarea id="vs" style="min-height:110px;font-family:inherit" placeholder="붙잡은 말씀 본문">${esc(w.verse||'')}</textarea></div>
+  <div class="row"><textarea id="nt" style="min-height:140px;font-family:inherit" placeholder="묵상 · 적용 · 나눔 (선택)">${esc(w.note||'')}</textarea></div>
+  <div class="row"><input id="nk" placeholder="닉네임 / 이름" value="${esc(w.nick||nk)}"></div>
+  <div class="row"><button class="b p" id="sv">나누기</button>${w.id&&own?'<button class="b" id="del">삭제</button>':''}<span class="mu" id="m"></span></div>`;
+  $('#bk').onclick=()=>{wv=null;draw()};
+  $('#sv').onclick=async()=>{if(w.id&&!can(w)){$('#m').textContent='수정 권한이 없어요';return}
+    const ref=$('#rf').value.trim(),verse=$('#vs').value.trim();if(!ref||!verse){$('#m').textContent='구절과 말씀 본문을 입력해주세요';return}
+    const nick=$('#nk').value.trim();try{localStorage.setItem('nick',nick)}catch(e){}
+    const cur=w.id&&words.find(x=>x.id===w.id)||w;
+    try{await db.collection('words').doc(w.id||'w'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)).set({ref,verse,note:$('#nt').value.trim(),nick,by:w.by||uid||'',amen:cur.amen||[],cm:cur.cm||[],ts:w.ts||Date.now()});wv=null;draw()}catch(e){$('#m').textContent='저장 실패: '+(e.message||e.code)}};
+  if(w.id&&own)$('#del').onclick=async()=>{if(!own){$('#m').textContent='삭제 권한이 없어요';return}if(sure($('#del'))){try{await db.collection('words').doc(w.id).delete();wv=null;draw()}catch(e){$('#m').textContent='삭제 실패'}}}}
+
+function home2(v){
+  const C=[['songs','🎵','WORSHIP of REMNANT','악보를 올리고 코드를 확인하고,\n콘티를 만들어 한번에 다운로드해요.','rgba(124,92,255,.14)','#6d5ce8'],['word','📖','MESSAGE of REMNANT','이번 주 붙잡은 말씀과\n묵상을 함께 나눠요.','rgba(59,130,246,.14)','#3b82f6'],['pray','🙏','PRAISE of REMNANT','기도제목과 기도문을 나누고\n함께 기도해요.','rgba(20,184,166,.14)','#14a37f']];
+  v.innerHTML=`<div class="dc" style="width:500px;height:500px;left:-200px;top:-180px"></div><div class="dc" style="width:440px;height:440px;right:-160px;bottom:-200px"></div>
+  <div class="hero"><div class="logo">🕊️</div><h1 class="ttl">REMNANT</h1><div class="bar"></div><div class="sub">함께 예배하고, 말씀을 붙잡고, 서로를 위해 기도하는 공간</div></div>
+  <div class="hg">${C.map(([g,i,t,d,tn,ac])=>`<div class="hc" data-g="${g}" style="--t:${tn};--a:${ac}"><div class="ic">${i}</div><h3>${t}</h3><p style="white-space:pre-line">${d}</p><div class="go">→</div></div>`).join('')}</div>`;
+  v.querySelectorAll('[data-g]').forEach(e=>e.onclick=()=>nav(e.dataset.g))}
+
+function prayPage(v){
+  if(pv)return prayEdit(v);
+  v.innerHTML=`<div class="row"><button class="b p" id="np">+ 기도 나누기</button><span style="flex:1"></span>${[['all','전체'],['req','기도제목'],['pr','기도문']].map(([k,t])=>`<button class="tab ${pf===k?'on':''}" data-f="${k}">${t}</button>`).join('')}</div>${todayPray()}<div id="pl"></div>`;
+  const a=prs.filter(p=>pf==='all'||p.type===pf).sort((x,y)=>(y.ts||0)-(x.ts||0));
+  $('#pl').innerHTML=a.length?a.map(p=>`<div class="card" style="display:block"><div class="mu">${p.type==='pr'?'📜 기도문':'🙏 기도제목'}${p.done?' · ✅ 응답·감사':''} · ${esc(p.nick||'익명')} · ${new Date(p.ts||0).toLocaleDateString('ko')}</div><b style="margin-top:4px">${esc(p.title||'')}</b><div style="margin:6px 0;white-space:pre-wrap">${esc(p.body||'')}</div><div class="row"><button class="b s" data-am="${p.id}">🤲 함께 기도 ${(p.amen||[]).length}</button>${can(p)?`<button class="b s" data-e="${p.id}">수정</button>${p.type!=='pr'?`<button class="b s" data-dn="${p.id}">${p.done?'응답 취소':'✅ 응답됐어요'}</button>`:''}`:''}</div>${cmHtml(p)}</div>`).join(''):'<p class="mu">아직 나눠진 기도가 없어요.</p>';
+  v.querySelectorAll('[data-f]').forEach(e=>e.onclick=()=>{pf=e.dataset.f;draw()});
+  $('#np').onclick=()=>{pv={type:pf==='pr'?'pr':'req'};draw()};cmBind(v,'prayers',prs);
+  v.querySelectorAll('[data-e]').forEach(e=>e.onclick=()=>{pv=prs.find(x=>x.id===e.dataset.e);draw()});
+  v.querySelectorAll('[data-dn]').forEach(e=>e.onclick=async()=>{const p=prs.find(x=>x.id===e.dataset.dn);try{await db.collection('prayers').doc(p.id).update({done:!p.done})}catch(x){}});
+  v.querySelectorAll('[data-am]').forEach(e=>e.onclick=async()=>{if(!uid)return;const p=prs.find(x=>x.id===e.dataset.am),s=new Set(p.amen||[]);s.has(uid)?s.delete(uid):s.add(uid);try{await db.collection('prayers').doc(p.id).update({amen:[...s]})}catch(x){}})}
+
+function prayEdit(v){
+  const p=pv;let nk='';try{nk=localStorage.getItem('nick')||''}catch(e){}
+  const an=p.nick==='익명';
+  v.innerHTML=`<button class="back" id="bk">← 취소</button><h2 style="margin:0 0 8px">${p.id?'기도 수정':'기도 나누기'}</h2>
+  <div class="row"><select id="ty"><option value="req" ${p.type!=='pr'?'selected':''}>기도제목</option><option value="pr" ${p.type==='pr'?'selected':''}>기도문</option></select></div>
+  <div class="row"><input id="ti" placeholder="제목" value="${esc(p.title||'')}"></div>
+  <div class="row"><textarea id="bo" style="min-height:200px;font-family:inherit" placeholder="기도제목 또는 기도문을 적어주세요">${esc(p.body||'')}</textarea></div>
+  <div class="row"><input id="nk" placeholder="닉네임 / 이름" value="${an?'':esc(p.nick||nk)}" style="flex:1"><label style="white-space:nowrap"><input type="checkbox" id="an" ${an?'checked':''} style="width:auto"> 익명으로</label></div>
+  <div class="row"><button class="b p" id="sv">나누기</button>${p.id&&own?'<button class="b" id="del">삭제</button>':''}<span class="mu" id="m"></span></div>`;
+  $('#bk').onclick=()=>{pv=null;draw()};
+  $('#sv').onclick=async()=>{if(p.id&&!can(p)){$('#m').textContent='수정 권한이 없어요';return}
+    const title=$('#ti').value.trim(),body=$('#bo').value.trim();if(!title||!body){$('#m').textContent='제목과 내용을 입력해주세요';return}
+    const nick=$('#nk').value.trim();try{localStorage.setItem('nick',nick)}catch(e){}
+    const cur=p.id&&prs.find(x=>x.id===p.id)||p;
+    try{await db.collection('prayers').doc(p.id||'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)).set({type:$('#ty').value,title,body,nick:$('#an').checked?'익명':nick,by:p.by||uid||'',amen:cur.amen||[],cm:cur.cm||[],done:!!cur.done,ts:p.ts||Date.now()});pv=null;draw()}catch(e){$('#m').textContent='저장 실패: '+(e.message||e.code)}};
+  if(p.id&&own)$('#del').onclick=async()=>{if(!own){$('#m').textContent='삭제 권한이 없어요';return}if(sure($('#del'))){try{await db.collection('prayers').doc(p.id).delete();pv=null;draw()}catch(e){$('#m').textContent='삭제 실패'}}}}
+
+const cmHtml=x=>`<div style="margin-top:6px;border-top:1px solid var(--bd);padding-top:6px">${(x.cm||[]).map((c,i)=>`<div class="mu" style="margin:4px 0"><b style="color:var(--tx)">${esc(c.nick||'익명')}</b> ${esc(c.text)}${own?` <span data-cd="${x.id}:${i}" style="cursor:pointer">✕</span>`:''}</div>`).join('')}<div class="row"><input data-ci="${x.id}" placeholder="한마디 남기기…" style="flex:1"><button class="b s" data-cs="${x.id}">남기기</button></div></div>`;
+function cmBind(v,coll,list){
+  v.querySelectorAll('[data-cs]').forEach(b=>b.onclick=async()=>{const id=b.dataset.cs,t=v.querySelector(`[data-ci="${id}"]`).value.trim(),x=list.find(z=>z.id===id);if(!t||!x)return;let nk='';try{nk=localStorage.getItem('nick')||''}catch(e){}if(!nk){nk=prompt('닉네임을 입력해주세요')||'익명';try{localStorage.setItem('nick',nk)}catch(e){}}
+    try{await db.collection(coll).doc(id).update({cm:[...(x.cm||[]),{by:uid||'',nick:nk,text:t,ts:Date.now()}]})}catch(e){}});
+  v.querySelectorAll('[data-cd]').forEach(b=>b.onclick=async()=>{const[id,i]=b.dataset.cd.split(':'),x=list.find(z=>z.id===id);try{await db.collection(coll).doc(id).update({cm:(x.cm||[]).filter((_,k)=>k!=i)})}catch(e){}})}
+function todayCard(){if(!words.length)return'';const a=words.slice().sort((x,y)=>x.id<y.id?-1:1),w=a[Math.floor(Date.now()/864e5)%a.length];return `<div class="card" style="display:block;background:linear-gradient(135deg,var(--ac),#7c9cf8);color:#fff;border:0"><div style="font-size:12px;opacity:.9">✨ 오늘의 말씀</div><div style="font-weight:800;font-size:17px;margin:6px 0">${esc(w.ref||'')}</div><div style="white-space:pre-wrap;line-height:1.7">${esc(w.verse||'')}</div><div style="font-size:12px;opacity:.9;margin-top:8px">— ${esc(w.nick||'익명')}</div></div>`}
+function todayPray(){const a=prs.filter(p=>p.type!=='pr'&&!p.done).sort((x,y)=>(x.amen||[]).length-(y.amen||[]).length||(y.ts||0)-(x.ts||0)).slice(0,3);if(!a.length)return'';return `<div class="card" style="display:block"><b>🕯️ 오늘 함께 기도할 제목</b>${a.map(p=>`<div style="margin-top:8px"><div class="mu">${esc(p.nick||'익명')}</div><div style="font-weight:700">${esc(p.title||'')}</div><div style="white-space:pre-wrap;font-size:14px">${esc((p.body||'').slice(0,80))}${(p.body||'').length>80?'…':''}</div><button class="b s" data-am="${p.id}" style="margin-top:4px">🤲 함께 기도 ${(p.amen||[]).length}</button></div>`).join('')}</div>`}
+
+function sure(b){if(b.dataset.arm){clearTimeout(b._t);delete b.dataset.arm;return true}b.dataset.arm='1';const o=b.textContent;b.textContent='정말 삭제? 한 번 더 누르세요';b._t=setTimeout(()=>{delete b.dataset.arm;b.textContent=o},4000);return false}
+const PW=1240,PH=1754,MX=90;
+function layout(items,hdr){
+  const F='"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif',pages=[];let cv,g,y;
+  const np=()=>{cv=document.createElement('canvas');cv.width=PW;cv.height=PH;g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,PW,PH);if(hdr){g.fillStyle='#999';g.font=`22px ${F}`;g.textAlign='right';g.fillText(hdr,PW-MX,56);g.textAlign='left'}y=120;pages.push(cv)};
+  const room=h=>{if(y+h>PH-80)np()};
+  const isSec=l=>/^\s*[\(\[]?(Verse|Chorus|Bridge|Intro|Outro|Pre|절|후렴|브릿지|간주|전주|후주)/i.test(l)&&!/\[[A-G]/.test(l);
+  np();
+  items.forEach((it,si)=>{
+    if(si>0)np();
+    const s=it.s,to=it.key,n=semis(s.key||'C',to),fl=flatKeys.includes(to);
+    g.fillStyle='#1f2a44';g.font=`bold 48px ${F}`;g.fillText(s.title,MX,y+40);y+=70;
+    g.fillStyle='#777';g.font=`26px ${F}`;g.fillText(`Key ${to}${s.artist?'  ·  '+s.artist:''}${it.memo?'  ·  '+it.memo:''}`,MX,y);y+=56;
+    (s.body||'').split('\n').forEach(l=>{
+      if(isSec(l)){room(60);g.font=`bold 24px ${F}`;g.fillStyle='#888';g.fillText(l.trim(),MX,y+34);y+=56;return}
+      if(isChordLine(l)){room(50);g.font='bold 28px ui-monospace,Menlo,monospace';g.fillStyle='#e8590c';g.fillText(tr(l,n,fl),MX,y+30);y+=54;return}
+      if(!/\[[^\]]+\]/.test(l)){room(56);g.font=`30px ${F}`;g.fillStyle='#222';g.fillText(l,MX,y+30);y+=l.trim()?56:30;return}
+      const p=l.split(/\[([^\]]+)\]/),sg=[];if(p[0])sg.push(['',p[0]]);for(let i=1;i<p.length;i+=2)sg.push([tr(p[i],n,fl),p[i+1]||'']);
+      room(96);let px=MX;
+      sg.forEach(([c,t])=>{g.font=`bold 26px ${F}`;const cw=c?g.measureText(c).width+10:0;g.font=`30px ${F}`;const w=Math.max(cw,g.measureText(t).width);
+        if(px+w>PW-MX&&px>MX){px=MX;y+=96;room(96)}
+        g.fillStyle='#e8590c';g.font=`bold 26px ${F}`;g.fillText(c,px,y+26);g.fillStyle='#222';g.font=`30px ${F}`;g.fillText(t,px,y+66);px+=w});
+      y+=96});
+  });
+  return{pages,lastY:y}}
+async function imgOf(items,name){try{const{pages,lastY}=layout(items,'');const c=document.createElement('canvas');c.width=PW;c.height=PH*(pages.length-1)+Math.min(PH,lastY+60);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);pages.forEach((p,i)=>g.drawImage(p,0,i*PH));await save(name+'.png',await new Promise(r=>c.toBlob(r,'image/png')))}catch(e){alert('이미지 만들기 실패: '+(e.message||e))}}
+async function pdfOf(items,name,hdr){try{const{pages}=layout(items,hdr||'');const bl=await Promise.all(pages.map(p=>new Promise(r=>p.toBlob(r,'image/jpeg',.9))));await save(name+'.pdf',await mkPdf(bl))}catch(e){alert('PDF 만들기 실패: '+(e.message||e))}}
+async function mkPdf(bl){
+  const enc=new TextEncoder(),parts=[],off=[];let len=0;
+  const add=x=>{const b=typeof x==='string'?enc.encode(x):x;parts.push(b);len+=b.length};
+  const obj=(n,fn)=>{off[n]=len;add(`${n} 0 obj\n`);fn();add('\nendobj\n')};
+  const N=bl.length;add('%PDF-1.4\n');
+  obj(1,()=>add('<</Type/Catalog/Pages 2 0 R>>'));
+  obj(2,()=>add(`<</Type/Pages/Count ${N}/Kids[${bl.map((_,i)=>`${5+i*3} 0 R`).join(' ')}]>>`));
+  for(let i=0;i<N;i++){const b=new Uint8Array(await bl[i].arrayBuffer()),im=3+i*3,ct=4+i*3,c='q 595 0 0 842 0 0 cm /I Do Q';
+    obj(im,()=>{add(`<</Type/XObject/Subtype/Image/Width ${PW}/Height ${PH}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${b.length}>>\nstream\n`);add(b);add('\nendstream')});
+    obj(ct,()=>add(`<</Length ${c.length}>>\nstream\n${c}\nendstream`));
+    obj(5+i*3,()=>add(`<</Type/Page/Parent 2 0 R/MediaBox[0 0 595 842]/Contents ${ct} 0 R/Resources<</XObject<</I ${im} 0 R>>>>>>`))}
+  const T=3+3*N,xs=len;add(`xref\n0 ${T}\n0000000000 65535 f \n`);for(let n=1;n<T;n++)add(String(off[n]).padStart(10,'0')+' 00000 n \n');
+  add(`trailer\n<</Size ${T}/Root 1 0 R>>\nstartxref\n${xs}\n%%EOF`);
+  return new Blob(parts,{type:'application/pdf'})}
+
+async function save(filename,data){
+  if(!dl){alert('이 화면에서는 다운로드를 쓸 수 없어요.');return}
+  try{await dl.save({filename:filename.split('/').join('-'),data})}catch(e){if(e&&e.code!=='declined')alert('다운로드 실패: '+(e.message||e.code))}}
+const R=['songs','word','pray'];
+function nav(x){location.hash=x;site=R.includes(x)?x:'home';view=null;wv=null;draw()}
+function go(){const h=location.hash.slice(1);site=R.includes(h)?h:'home';view=null;wv=null;draw()}
+addEventListener('hashchange',go);$('#hm').onclick=()=>nav('home');go();init();
+</script></body></html>
