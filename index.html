@@ -54,7 +54,7 @@ body.home{background:linear-gradient(135deg,#e6f3ff,#fffaf4 50%,#ffeee3);min-hei
 <h1 id="h1"></h1>
 <div class="tabs" id="tb"><button class="tab on" data-t="songs">찬양 목록</button><button class="tab" data-t="sets">콘티</button></div>
 <div id="v"></div>
-<div style="text-align:center;margin:28px 0 8px"><button onclick="adminLogin()" style="background:none;border:0;color:#999;font-size:12px;cursor:pointer">🔒 관리자</button></div>
+
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -62,19 +62,17 @@ body.home{background:linear-gradient(135deg,#e6f3ff,#fffaf4 50%,#ffeee3);min-hei
 <script>
 /* ===== 여기를 본인 값으로 바꾸세요 (README.md 참고) ===== */
 const FIREBASE_CONFIG={apiKey:"여기에",authDomain:"여기에",projectId:"여기에",appId:"여기에"};
-const ADMIN_EMAIL="관리자이메일@example.com";
 /* ======================================================== */
 firebase.initializeApp(FIREBASE_CONFIG);
 const auth=firebase.auth(),fdb=firebase.firestore();
 const ready=new Promise(res=>{let t=false;auth.onAuthStateChanged(u=>{if(u)res(u);else if(!t){t=true;auth.signInAnonymously().catch(()=>res(null))}})});
 const claude={async use(n){const u=await ready;
  if(n==='db')return u?{collection:c=>({onSnapshot:(f,e)=>fdb.collection(c).onSnapshot(f,e),doc:id=>({set:d=>fdb.collection(c).doc(id).set(d),update:d=>fdb.collection(c).doc(id).update(d),delete:()=>fdb.collection(c).doc(id).delete()})})}:null;
- if(n==='user'){const a=!!u&&u.email===ADMIN_EMAIL;return{id:async()=>u.uid,isOwner:()=>a,canEdit:()=>a}}
+ if(n==='user')return{id:async()=>u.uid,isOwner:()=>true,canEdit:()=>true};
  if(n==='downloads')return{save:async({filename,data})=>{const b=data instanceof Blob?data:new Blob([data],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000)}};
  if(n==='assets')return{upload:async b=>{const bm=await createImageBitmap(b),r=Math.min(1,1100/Math.max(bm.width,bm.height)),c=document.createElement('canvas');c.width=bm.width*r;c.height=bm.height*r;c.getContext('2d').drawImage(bm,0,0,c.width,c.height);const id='p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);await fdb.collection('photos').doc(id).set({data:c.toDataURL('image/jpeg',.7),ts:Date.now()});return{id}}};
  return null}};
 function loadPhotos(root){root.querySelectorAll('img[data-ph]').forEach(async im=>{try{const d=await fdb.collection('photos').doc(im.dataset.ph).get();if(d.exists)im.src=d.data().data}catch(e){}})}
-function adminLogin(){const cu=auth.currentUser;if(cu&&cu.email===ADMIN_EMAIL){auth.signOut().then(()=>location.reload());return}const pw=prompt('관리자 비밀번호');if(!pw)return;auth.signInWithEmailAndPassword(ADMIN_EMAIL,pw).then(()=>location.reload()).catch(()=>alert('로그인에 실패했어요'))}
 </script>
 <script>
 const $=s=>document.querySelector(s);
